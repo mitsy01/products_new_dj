@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Кошик{% endblock %}
+
+{% block content %}
+<h1>Кошик</h1>
+
+{% if cart.items.exists %}
+<table>
+    <tr>
+        <th>Товар</th>
+        <th>Кількість</th>
+        <th>Ціна</th>
+        <th>Сума</th>
+        <th>Дії</th>
+    </tr>
+    {% for item in cart.items.all %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.product.price }}</td>
+        <td>{{ item.subtotal }}</td>
+        <td>
+            <form method="post" action="{% url 'basket_remove' item.product.id %}">
+                {% csrf_token %}
+                <button type="submit">Видалити</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Разом: {{ basket.total }}</h3>
+<form method="post" action="{% url 'basket_clear' %}">
+    {% csrf_token %}
+    <button type="submit">Очистити кошик</button>
+</form>
+
+{% else %}
+<p>Кошик порожній</p>
+{% endif %}
+
+<a href="{% url 'show_prod' %}">Продовжити покупки</a>
+{% endblock %}

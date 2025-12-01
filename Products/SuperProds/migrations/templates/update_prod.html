@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Оновити {{ product.name }}</title>
+</head>
+<body>
+
+<h1>Оновити {{ product.name }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Оновити</button>
+</form>
+
+<a href="{% url 'show_prod' product.id %}">Скасувати</a>
+
+</body>
+</html>

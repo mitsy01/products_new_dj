@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Магазин{% endblock %}</title>
+</head>
+<body>
+
+<nav>
+    <a href="{% url 'index' %}">Головна</a>
+    <a href="{% url 'show_prod' %}">Товари</a>
+    <a href="{% url 'add_prod' %}">Додати товар</a>
+</nav>
+
+<hr>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

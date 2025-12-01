@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<form method="post" action="{% url 'basket_add' product.id %}">
+    {% csrf_token %}
+    <input type="number" name="quantity" value="1" min="1">
+    <button type="submit">Додати в кошик</button>
+</form>
+
+
+<html>
+<head>
+    <title>{{ product.name }}</title>
+</head>
+<body>
+
+<h1>{{ product.name }}</h1>
+
+<p>Ціна: {{ product.price }} грн</p>
+<p>Опис: {{ product.description }}</p>
+
+<a href="{% url 'update_prod' product.id %}">Оновити</a><br>
+<a href="{% url 'del_prod' product.id %}">Видалити</a><br>
+<a href="{% url 'show_prod' %}">Назад до списку</a>
+
+</body>
+</html>
