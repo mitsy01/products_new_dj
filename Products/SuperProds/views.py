@@ -103,9 +103,16 @@ def sign_in(request):
             
     return render(request=request, template_name="sign_in.html", context=dict(form=form))
 
-def product_list_cached(request):
-    products = Product.objects.all()
-    return render(request, "show_prod.html", {"products": products})
+
+def prod_list_cache(request):
+    products = cache.get("show_prod")
+
+    if products is None:
+        products = list(Product.objects.all())
+        cache.set("show_prod.html", products, timeout=60)
+
+    return render(request, "store/get_all_prods.html", {"products": products})
+
 
 @login_required(login_url="/sign_up/")
 def logout_func(request):

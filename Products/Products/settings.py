@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 from pymysql import install_as_MySQLdb
-from dotenv import load_dotenv
+from dotenv  import load_dotenv
 
 install_as_MySQLdb()
 
