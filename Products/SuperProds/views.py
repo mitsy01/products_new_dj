@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.core.cache import cache
@@ -10,10 +10,19 @@ from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, FormView
+from faker import Faker
+from rest_framework.response import Response 
+from rest_framework.decorators import api_view
+from rest_framework import serializers
 
 
 from .models import Product, Profile
 from .forms import ProductForm, LoginForm, SignUpForm, Profile, ProfileForm, User, UserForm
+from .serializers  import ProfileSerializer 
+
+
+fake = Faker()
+
 
 
 def get_products(request):
@@ -70,18 +79,15 @@ class ProductsView(ListView):
         
         return render(request=request, template_name="prod_view.html", context=dict(page_obj=page_obj))
     
-def sign_up(request):
-    if request.user.is_authenticated:
-        return redirect("index")
-    
+def sign_up(request: HttpRequest):
     form = SignUpForm(data=request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        user = form.save()
-        login(request=request, user=user)
-        messages.add_message(request=request, level=messages.SUCCESS, message="Ви зарєєструвались.")
-        return redirect("index")
-    
-    return render(request=request, template_name="sign_up.html", context={"form": form})
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return JsonResponse(dict(status="success"), status=200)
+        else:
+            return JsonResponse(dict(status="error", errors=form.errors), status=400)
+    return render(request, "sign_up.html", dict(form=form))
 
 
 def sign_in(request):
@@ -144,3 +150,10 @@ def profile_post(request: HttpRequest):
             
             
     return redirect("profile")
+
+
+@api_view(["GET"])
+def test_api(request: HttpRequest):
+    profile = Profile.objects.get(user=request.user)
+    data = ProfileSerializer(instance=profile, many=True)
+    return Response(data.data)

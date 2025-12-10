@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Головна {% endblock %}
+
+
+<link rel="stylesheet" href="{% static 'css/index.css' %}"> </style>
+<h1>Вітаю {{ request.user.username }} в нашому додатку </h1>
+
+<button id="myIdButton" class="myButton btn btn-success">Натисни</button>
+<div class="message"></div>
+<script src="{% static 'js/index.js' %}"></script> 
+
+
+{% block content %} 
+<h1>Головна сторінка</h1>
+<p>Вітаємо у магазині</p>
+{% endblock %}
