@@ -13,7 +13,7 @@ from django.views.generic import ListView, FormView
 from faker import Faker
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
-from rest_framework import serializers
+
 
 
 from .models import Product, Profile
